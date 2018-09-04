@@ -21,6 +21,7 @@ package carla.doe2_output;
 import otis.lexical.AndParser;
 import otis.lexical.CannotParseException;
 import otis.lexical.CharacterParser;
+import otis.lexical.ConsecutiveColumnParser;
 import otis.lexical.InputSequence;
 import otis.lexical.NumericParser;
 import otis.lexical.OrParser;
@@ -71,6 +72,12 @@ public class DOE2Report {
 
 	public double nextNumeric() throws CannotParseException {
 		return Double.parseDouble(numericParser.parse(in));
+	}
+	
+	public double readNumericFromColumns(int fromColumn, int toColumn)throws CannotParseException{
+		ConsecutiveColumnParser ignoreParser = new ConsecutiveColumnParser(fromColumn);
+		ignoreParser.parse(in);
+		return Double.parseDouble(new ConsecutiveColumnParser(toColumn-fromColumn).parse(in));
 	}
 
 }

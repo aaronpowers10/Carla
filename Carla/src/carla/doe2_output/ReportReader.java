@@ -19,15 +19,18 @@
 package carla.doe2_output;
 
 import java.util.ArrayList;
-import booker.building_data.UpdateListener;
+
 import otis.lexical.CannotParseException;
 import otis.lexical.ConsecutiveColumnParser;
+import otis.lexical.EOFParser;
 import otis.lexical.InputSequence;
 import otis.lexical.OptionalParser;
+import otis.lexical.OrParser;
 import otis.lexical.Parser;
 import otis.lexical.StringParser;
 import otis.lexical.ToParser;
 import otis.lexical.UpToParser;
+import otis.lexical.UpdateListener;
 
 public class ReportReader {
 
@@ -46,7 +49,7 @@ public class ReportReader {
 		reportItemParser = new ConsecutiveColumnParser(48);
 		StringParser newLine = new StringParser("\r\n");
 		lineParser = new OptionalParser(new ToParser(newLine));
-		reportTextParser = new UpToParser(reportFlag);
+		reportTextParser = new UpToParser(new OrParser(new Parser[]{reportFlag,new EOFParser()}));
 	}
 
 	public DOE2Report read(InputSequence in) throws CannotParseException {
